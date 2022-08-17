@@ -16,7 +16,8 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
         final foodDataList = await repo.getFoodList();
         if (foodDataList != null) {
           // foodData = foodDataList;
-          emit(FoodLoaded(foodList: foodDataList, cartList: {}));
+          emit(FoodLoaded(
+              foodList: foodDataList, cartList: {}, cartItemRatings: {}));
         }
         if (foodDataList == null) {
           emit(FoodError("No Data Found"));
@@ -34,8 +35,13 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
           cart.addAll({event.item.id!: 0});
         }
         cart[event.item.id!] = cart[event.item.id!]! + 1;
-        emit(FoodLoaded(
-            foodList: (state as FoodLoaded).foodList, cartList: cart));
+        emit(
+          FoodLoaded(
+            foodList: (state as FoodLoaded).foodList,
+            cartList: cart,
+            cartItemRatings: (state as FoodLoaded).cartItemRatings,
+          ),
+        );
       } else {
         if (cart[event.item.id]! - 1 == 0) {
           cart.remove(event.item.id);
@@ -44,9 +50,32 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
         }
         cart.remove(event.item);
         emit(
-            FoodLoaded(foodList: (state as FoodLoaded).foodList, cartList: cart));
+          FoodLoaded(
+            foodList: (state as FoodLoaded).foodList,
+            cartList: cart,
+            cartItemRatings: (state as FoodLoaded).cartItemRatings,
+          ),
+        );
       }
       // print(cart);
+    });
+
+    on<UserRatedItem>((event, emit) {
+      Map<int, double> rating = Map<int, double>.from(
+        (state as FoodLoaded).cartItemRatings,
+      );
+      if (rating[event.item.id] == null) {
+        rating.addAll({event.item.id!: 0});
+      }
+      rating[event.item.id!] = event.rating;
+      print(rating);
+      emit(
+        FoodLoaded(
+          foodList: (state as FoodLoaded).foodList,
+          cartList: (state as FoodLoaded).cartList,
+          cartItemRatings: rating,
+        ),
+      );
     });
   }
 }
