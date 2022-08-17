@@ -5,16 +5,11 @@ abstract class FoodEvents {
   const FoodEvents();
 }
 
-class AddItem extends FoodEvents {
+class UpdateCart extends FoodEvents {
   final FoodModel item;
+  final bool isAdd;
 
-  const AddItem(this.item);
-}
-
-class RemoveItem extends FoodEvents {
-  final FoodModel item;
-
-  const RemoveItem(this.item);
+  const UpdateCart({required this.item, required this.isAdd});
 }
 
 class GetFoodList extends FoodEvents {}

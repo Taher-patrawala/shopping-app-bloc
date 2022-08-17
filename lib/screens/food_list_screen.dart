@@ -39,8 +39,8 @@ class FoodListScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is FoodError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Error"),
+            SnackBar(
+              content: Text("${state.message}"),
             ),
           );
         }

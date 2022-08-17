@@ -28,7 +28,7 @@ class FoodItem extends StatelessWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Expanded(
             flex: 3,
@@ -41,13 +41,14 @@ class FoodItem extends StatelessWidget {
                 children: [
                   Text(
                     item.name.toString(),
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 18),
                   ),
                   const SizedBox(height: 12),
                   Flexible(
                     child: Text(
                       item.ingredients.toString(),
                       maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       softWrap: true,
                       style:
                           TextStyle(fontSize: 15, color: Colors.grey.shade700),
@@ -65,7 +66,7 @@ class FoodItem extends StatelessWidget {
                                     index == 4 ? Icons.star_border : Icons.star,
                                     color: index == 4
                                         ? Colors.black45
-                                        : Color(0xffF2E900),
+                                        : const Color(0xffF2E900),
                                     size: 24,
                                   ),
                                   const SizedBox(width: 6),
@@ -79,9 +80,11 @@ class FoodItem extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 8),
           Expanded(
             flex: 2,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   // color: Colors.red,
@@ -91,7 +94,7 @@ class FoodItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                     child: Image.network(
                       item.imageLink.toString(),
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       scale: 8,
                     ),
                   ),
@@ -110,7 +113,7 @@ class FoodItem extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           if (!contained) {
-                            context.read<FoodBloc>().add(AddItem(item));
+                            context.read<FoodBloc>().add(UpdateCart(item: item,isAdd: true));
                           }
                         },
                         child: Container(
@@ -133,13 +136,13 @@ class FoodItem extends StatelessWidget {
                                 )
                               : CounterButton(
                                   addItem: () {
-                                    context.read<FoodBloc>().add(AddItem(item));
+                                    context.read<FoodBloc>().add(UpdateCart(item: item,isAdd: true));
                                   },
                                   count: state.cartList[item.id]!,
                                   removeItem: () {
                                     context
                                         .read<FoodBloc>()
-                                        .add(RemoveItem(item));
+                                        .add(UpdateCart(item: item,isAdd: false));
                                   },
                                 ),
                         ),

@@ -1,7 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/blocs/food_event.dart';
 import 'package:food_delivery/blocs/food_state.dart';
-import 'package:food_delivery/model/food_model.dart';
 import 'package:food_delivery/repository/food_repo.dart';
 
 class FoodBloc extends Bloc<FoodEvents, FoodState> {
@@ -26,26 +25,26 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
         emit(FoodError(e.toString()));
       }
     });
-    on<AddItem>((event, emit) {
+
+    on<UpdateCart>((event, emit) {
       Map<int, int> cart = Map<int, int>.from((state as FoodLoaded).cartList);
-      if (cart[event.item.id] == null) {
-        cart.addAll({event.item.id!: 0});
-      }
-      cart[event.item.id!] = cart[event.item.id!]! + 1;
-      emit(
-          FoodLoaded(foodList: (state as FoodLoaded).foodList, cartList: cart));
-      // print(cart);
-    });
-    on<RemoveItem>((event, emit) {
-      Map<int, int> cart = Map<int, int>.from((state as FoodLoaded).cartList);
-      if (cart[event.item.id]! - 1 == 0) {
-        cart.remove(event.item.id);
+      if (event.isAdd) {
+        if (cart[event.item.id] == null) {
+          cart.addAll({event.item.id!: 0});
+        }
+        cart[event.item.id!] = cart[event.item.id!]! + 1;
+        emit(FoodLoaded(
+            foodList: (state as FoodLoaded).foodList, cartList: cart));
       } else {
-        cart[event.item.id!] = cart[event.item.id!]! - 1;
+        if (cart[event.item.id]! - 1 == 0) {
+          cart.remove(event.item.id);
+        } else {
+          cart[event.item.id!] = cart[event.item.id!]! - 1;
+        }
+        cart.remove(event.item);
+        emit(
+            FoodLoaded(foodList: (state as FoodLoaded).foodList, cartList: cart));
       }
-      cart.remove(event.item);
-      emit(
-          FoodLoaded(foodList: (state as FoodLoaded).foodList, cartList: cart));
       // print(cart);
     });
   }
