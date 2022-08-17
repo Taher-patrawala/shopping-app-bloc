@@ -22,7 +22,8 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
           emit(FoodError("No Data Found"));
         }
       } catch (e) {
-        emit(FoodError(e.toString()));
+        print(e);
+        emit(FoodError("No Data Found"));
       }
     });
 

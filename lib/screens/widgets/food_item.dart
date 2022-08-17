@@ -41,9 +41,9 @@ class FoodItem extends StatelessWidget {
                 children: [
                   Text(
                     item.name.toString(),
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 17),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height:8),
                   Flexible(
                     child: Text(
                       item.ingredients.toString(),
@@ -67,7 +67,7 @@ class FoodItem extends StatelessWidget {
                                     color: index == 4
                                         ? Colors.black45
                                         : const Color(0xffF2E900),
-                                    size: 24,
+                                    size: 26,
                                   ),
                                   const SizedBox(width: 6),
                                 ],

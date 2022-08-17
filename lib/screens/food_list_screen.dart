@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/blocs/food_bloc.dart';
-import 'package:food_delivery/blocs/food_event.dart';
 import 'package:food_delivery/blocs/food_state.dart';
 import 'package:food_delivery/model/food_model.dart';
 import 'package:food_delivery/screens/cart_screen.dart';
@@ -17,7 +16,7 @@ class FoodListScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         title: const Text(
-          "Domino's Pizza",
+          "Shopping Center",
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,
