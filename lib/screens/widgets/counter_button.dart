@@ -15,9 +15,12 @@ class CounterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 2),
       width: 120,
-      decoration: BoxDecoration(border: Border.all(color: Colors.green)),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: Colors.green),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -29,7 +32,7 @@ class CounterButton extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             "$count",
-            style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16),
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
           ),
           const SizedBox(width: 12),
           InkWell(

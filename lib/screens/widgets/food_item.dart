@@ -19,7 +19,7 @@ class FoodItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         color: Colors.white,
         border: Border.symmetric(
@@ -33,7 +33,7 @@ class FoodItem extends StatelessWidget {
           Expanded(
             flex: 3,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 4),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,21 +50,31 @@ class FoodItem extends StatelessWidget {
                       maxLines: 2,
                       softWrap: true,
                       style:
-                          TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                          TextStyle(fontSize: 15, color: Colors.grey.shade700),
                     ),
                   ),
                   const SizedBox(height: 12),
-                  showRating?SizedBox(
-                    width: 200,
-                    child: Row(
-                      children: List<Icon>.generate(5, (index) {
-                        return Icon(
-                          index == 4 ? Icons.star_border : Icons.star,
-                          color: index == 4 ? Colors.black45 : Colors.yellow,
-                        );
-                      }),
-                    ),
-                  ):Container(),
+                  showRating
+                      ? SizedBox(
+                          width: 200,
+                          child: Row(
+                            children: List.generate(5, (index) {
+                              return Row(
+                                children: [
+                                  Icon(
+                                    index == 4 ? Icons.star_border : Icons.star,
+                                    color: index == 4
+                                        ? Colors.black45
+                                        : Color(0xffF2E900),
+                                    size: 24,
+                                  ),
+                                  const SizedBox(width: 6),
+                                ],
+                              );
+                            }),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),
@@ -99,14 +109,16 @@ class FoodItem extends StatelessWidget {
                       }
                       return InkWell(
                         onTap: () {
-                          context.read<FoodBloc>().add(AddItem(item));
+                          if (!contained) {
+                            context.read<FoodBloc>().add(AddItem(item));
+                          }
                         },
                         child: Container(
                           width: 130,
-                          padding: const EdgeInsets.symmetric(vertical: 2),
+                          padding: const EdgeInsets.symmetric(vertical: 4),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(0.5),
+                            borderRadius: BorderRadius.circular(4),
                             border: Border.all(
                               color:
                                   contained ? Colors.transparent : Colors.red,
@@ -117,8 +129,7 @@ class FoodItem extends StatelessWidget {
                                   "ADD",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: Colors.red,
-                                  ),
+                                      color: Colors.red, fontSize: 16),
                                 )
                               : CounterButton(
                                   addItem: () {
