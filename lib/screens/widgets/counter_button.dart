@@ -14,25 +14,30 @@ class CounterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        InkWell(
-          onTap: () => removeItem(),
-          child: Container(
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      width: 120,
+      decoration: BoxDecoration(border: Border.all(color: Colors.green)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          InkWell(
+            onTap: () => removeItem(),
             child: const Icon(Icons.remove),
           ),
-        ),
-        Container(
-          child: Text("$count"),
-        ),
-        InkWell(
-          onTap: () => addItem(),
-          child: Container(
+          const SizedBox(width: 12),
+          Text(
+            "$count",
+            style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 16),
+          ),
+          const SizedBox(width: 12),
+          InkWell(
+            onTap: () => addItem(),
             child: const Icon(Icons.add),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

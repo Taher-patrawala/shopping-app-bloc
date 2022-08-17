@@ -7,22 +7,8 @@ import 'package:food_delivery/model/food_model.dart';
 import 'package:food_delivery/screens/cart_screen.dart';
 import 'package:food_delivery/screens/food_item.dart';
 
-class FoodListScreen extends StatefulWidget {
+class FoodListScreen extends StatelessWidget {
   const FoodListScreen({Key? key}) : super(key: key);
-
-  @override
-  State<FoodListScreen> createState() => _FoodListScreenState();
-}
-
-class _FoodListScreenState extends State<FoodListScreen> {
-  // final FoodBloc _newsBloc = FoodBloc();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // _newsBloc.add(GetFoodList());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +27,7 @@ class _FoodListScreenState extends State<FoodListScreen> {
           textAlign: TextAlign.left,
         ),
         actions: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const CartScreen()),
-              );
-            },
-            child: const Padding(
-              padding: EdgeInsets.only(right: 14),
-              child: Icon(
-                Icons.shopping_cart_outlined,
-                color: Colors.black,
-                size: 28,
-              ),
-            ),
-          ),
+          _cartButton(context),
         ],
       ),
       body: _buildListCovid(),
@@ -104,4 +75,64 @@ class _FoodListScreenState extends State<FoodListScreen> {
   }
 
   Widget _buildLoading() => const Center(child: CircularProgressIndicator());
+
+  Widget _cartButton(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const CartScreen()),
+        );
+      },
+      child: Container(
+        height: 120,
+        width: 100,
+        // color: Colors.green,
+        padding: const EdgeInsets.only(right: 8),
+        margin: const EdgeInsets.only(right: 5),
+        child: Stack(
+          children: [
+            const Positioned(
+              top: 0,
+              bottom: 0,
+              right: 4,
+              child: Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.black,
+                size: 36,
+              ),
+            ),
+            Positioned(
+              bottom: 4,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.red,
+                ),
+                child: BlocBuilder<FoodBloc, FoodState>(
+                  builder: (context, state) {
+                    if (state is FoodLoaded) {
+                      _calculateCartItems(state.cartList);
+                      return Text(
+                        _calculateCartItems(state.cartList).toString(),
+                        style: const TextStyle(fontSize: 16),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _calculateCartItems(Map<int, int> cart) {
+    return (cart.values
+        .fold(0, (previousValue, element) => (previousValue as int) + element));
+  }
 }

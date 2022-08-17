@@ -97,21 +97,17 @@ class FoodItem extends StatelessWidget {
                       }
                       return InkWell(
                         onTap: () {
-                          // if (!contained) {
-                          //
-                          // } else {
                           context.read<FoodBloc>().add(AddItem(item));
-                          // }
                         },
                         child: Container(
                           width: 130,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 2),
+                          padding: const EdgeInsets.symmetric(vertical: 2),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(0.5),
                             border: Border.all(
-                              color: contained ? Colors.green : Colors.red,
+                              color:
+                                  contained ? Colors.transparent : Colors.red,
                             ),
                           ),
                           child: !contained
