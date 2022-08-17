@@ -30,11 +30,11 @@ class FoodListScreen extends StatelessWidget {
           _cartButton(context),
         ],
       ),
-      body: _buildListCovid(),
+      body: _buildList(),
     );
   }
 
-  Widget _buildListCovid() {
+  Widget _buildList() {
     return BlocListener<FoodBloc, FoodState>(
       listener: (context, state) {
         if (state is FoodError) {
@@ -54,7 +54,9 @@ class FoodListScreen extends StatelessWidget {
           } else if (state is FoodLoaded) {
             return _buildCard(state.foodList);
           } else if (state is FoodError) {
-            return Container();
+            return Center(
+              child: Text(state.message.toString()),
+            );
           } else {
             return Container();
           }
@@ -116,7 +118,7 @@ class FoodListScreen extends StatelessWidget {
                     if (state is FoodLoaded) {
                       _calculateCartItems(state.cartList);
                       return Text(
-                        _calculateCartItems(state.cartList).toString(),
+                        "${_calculateCartItems(state.cartList)}",
                         style: const TextStyle(fontSize: 16),
                       );
                     }
