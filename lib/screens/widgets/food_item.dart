@@ -98,23 +98,29 @@ class FoodItem extends StatelessWidget {
                       : BlocBuilder<FoodBloc, FoodState>(
                           builder: (context, state) {
                             if (state is FoodLoaded) {
-                              return Row(
-                                children: [
-                                  const Text(
-                                    "Ratings: ",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 15),
-                                  ),
-                                  Text(
-                                    "${state.cartItemRatings[item.id]}",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  const Text("/5.0"),
-                                ],
-                              );
+                              return state.cartItemRatings[item.id] != null
+                                  ? Row(
+                                      children: [
+                                        const Text(
+                                          "Ratings: ",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        ),
+                                        Text(
+                                          "${state.cartItemRatings[item.id]}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const Text("/5.0"),
+                                      ],
+                                    )
+                                  : const Text(
+                                      "Not rated",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    );
                             }
                             return Container();
                           },
