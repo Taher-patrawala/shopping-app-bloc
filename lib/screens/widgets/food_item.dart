@@ -8,10 +8,12 @@ import 'package:food_delivery/screens/widgets/counter_button.dart';
 
 class FoodItem extends StatelessWidget {
   final FoodModel item;
+  final bool showRating;
 
   const FoodItem({
     Key? key,
     required this.item,
+    this.showRating = true,
   }) : super(key: key);
 
   @override
@@ -52,7 +54,7 @@ class FoodItem extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  SizedBox(
+                  showRating?SizedBox(
                     width: 200,
                     child: Row(
                       children: List<Icon>.generate(5, (index) {
@@ -62,7 +64,7 @@ class FoodItem extends StatelessWidget {
                         );
                       }),
                     ),
-                  ),
+                  ):Container(),
                 ],
               ),
             ),

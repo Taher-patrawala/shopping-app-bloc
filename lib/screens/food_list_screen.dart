@@ -5,7 +5,7 @@ import 'package:food_delivery/blocs/food_event.dart';
 import 'package:food_delivery/blocs/food_state.dart';
 import 'package:food_delivery/model/food_model.dart';
 import 'package:food_delivery/screens/cart_screen.dart';
-import 'package:food_delivery/screens/food_item.dart';
+import 'package:food_delivery/screens/widgets/food_item.dart';
 
 class FoodListScreen extends StatelessWidget {
   const FoodListScreen({Key? key}) : super(key: key);
