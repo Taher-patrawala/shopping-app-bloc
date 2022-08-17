@@ -32,9 +32,18 @@ class CartScreen extends StatelessWidget {
           // bloc: FoodBloc(),
           builder: (context, state) {
             if (state is FoodLoaded) {
-              return _showCartItems(context, state.cartList, state.foodList);
+              if (state.cartList.isNotEmpty) {
+                return _showCartItems(context, state.cartList, state.foodList);
+              } else {
+                return const Text(
+                  "No Items In Your Cart",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                );
+              }
             } else {
-              return const Text("None");
+              return Container();
             }
           },
         ),
@@ -57,7 +66,7 @@ class CartScreen extends StatelessWidget {
             }
           }
           if (cart[key] != 0) {
-            return _cardItem(context, item, cart);
+            return _cardItem(context, item, cart[key]!);
           } else {
             return Container();
           }
@@ -67,7 +76,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
-  _cardItem(BuildContext context, FoodModel? item, Map<int, int> cart) {
+  _cardItem(BuildContext context, FoodModel? item, int cartSize) {
     return Card(
       elevation: 8,
       child: Padding(
@@ -97,7 +106,7 @@ class CartScreen extends StatelessWidget {
               removeItem: () {
                 context.read<FoodBloc>().add(RemoveItem(item!));
               },
-              count: cart[key]!,
+              count: cartSize,
             )
           ],
         ),
