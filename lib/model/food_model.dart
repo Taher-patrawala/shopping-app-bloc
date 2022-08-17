@@ -9,9 +9,9 @@ class FoodModel {
 
   FoodModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
-    ingredients = json['ingredients'];
-    imageLink = json['imageLink'];
+    name = json['title'];
+    ingredients = json['description'];
+    imageLink = json['image'];
   }
 
   FoodModel.withError(String errorMessage) {
