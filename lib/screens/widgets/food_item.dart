@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:food_delivery/blocs/food_bloc.dart';
 import 'package:food_delivery/blocs/food_event.dart';
 import 'package:food_delivery/blocs/food_state.dart';
@@ -43,7 +44,7 @@ class FoodItem extends StatelessWidget {
                     item.name.toString(),
                     style: const TextStyle(fontSize: 17),
                   ),
-                  const SizedBox(height:8),
+                  const SizedBox(height: 8),
                   Flexible(
                     child: Text(
                       item.ingredients.toString(),
@@ -56,26 +57,74 @@ class FoodItem extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   showRating
-                      ? SizedBox(
-                          width: 200,
-                          child: Row(
-                            children: List.generate(5, (index) {
-                              return Row(
-                                children: [
-                                  Icon(
-                                    index == 4 ? Icons.star_border : Icons.star,
-                                    color: index == 4
-                                        ? Colors.black45
-                                        : const Color(0xffF2E900),
-                                    size: 26,
-                                  ),
-                                  const SizedBox(width: 6),
-                                ],
-                              );
-                            }),
+                      ? RatingBar.builder(
+                          initialRating: 0,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 26,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Color(0xffF2E900),
                           ),
+                          onRatingUpdate: (rating) {
+                            context.read<FoodBloc>().add(
+                                  UserRatedItem(item: item, rating: rating),
+                                );
+                          },
                         )
-                      : Container(),
+                      // ? SizedBox(
+                      //     width: 200,
+                      //     child: Row(
+                      //       children: List.generate(5, (index) {
+                      //         return Row(
+                      //           children: [
+                      //             Icon(
+                      //               index == 4 ? Icons.star_border : Icons.star,
+                      //               color: index == 4
+                      //                   ? Colors.black45
+                      //                   : const Color(0xffF2E900),
+                      //               size: 26,
+                      //             ),
+                      //             const SizedBox(width: 6),
+                      //           ],
+                      //         );
+                      //       }),
+                      //     ),
+                      //   )
+                      : BlocBuilder<FoodBloc, FoodState>(
+                          builder: (context, state) {
+                            if (state is FoodLoaded) {
+                              return state.cartItemRatings[item.id] != null
+                                  ? Row(
+                                      children: [
+                                        const Text(
+                                          "Ratings: ",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 15),
+                                        ),
+                                        Text(
+                                          "${state.cartItemRatings[item.id]}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        const Text("/5.0"),
+                                      ],
+                                    )
+                                  : const Text(
+                                      "Not rated",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                    );
+                            }
+                            return Container();
+                          },
+                        ),
                 ],
               ),
             ),
@@ -113,7 +162,9 @@ class FoodItem extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           if (!contained) {
-                            context.read<FoodBloc>().add(UpdateCart(item: item,isAdd: true));
+                            context
+                                .read<FoodBloc>()
+                                .add(UpdateCart(item: item, quantity: 1));
                           }
                         },
                         child: Container(
@@ -136,13 +187,13 @@ class FoodItem extends StatelessWidget {
                                 )
                               : CounterButton(
                                   addItem: () {
-                                    context.read<FoodBloc>().add(UpdateCart(item: item,isAdd: true));
+                                    context.read<FoodBloc>().add(
+                                        UpdateCart(item: item, quantity: 1));
                                   },
                                   count: state.cartList[item.id]!,
                                   removeItem: () {
-                                    context
-                                        .read<FoodBloc>()
-                                        .add(UpdateCart(item: item,isAdd: false));
+                                    context.read<FoodBloc>().add(
+                                        UpdateCart(item: item, quantity: -1));
                                   },
                                 ),
                         ),

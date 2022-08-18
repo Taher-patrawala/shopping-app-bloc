@@ -6,47 +6,56 @@ import 'package:food_delivery/repository/food_repo.dart';
 class FoodBloc extends Bloc<FoodEvents, FoodState> {
   final FoodRepo repo = FoodRepo();
 
-  // Map<int, int> cart = {};
-  // List<FoodModel> foodData = [];
+  FoodBloc() : super(FoodLoading()) {
+    on<GetFoodList>(_getFoodList);
+    on<UpdateCart>(_updateCart);
+    on<UserRatedItem>(_updateRating);
+  }
 
-  FoodBloc() : super(FoodInitial()) {
-    on<GetFoodList>((event, emit) async {
-      try {
-        emit(FoodLoading());
-        final foodDataList = await repo.getFoodList();
-        if (foodDataList != null) {
-          // foodData = foodDataList;
-          emit(FoodLoaded(foodList: foodDataList, cartList: {}));
-        }
-        if (foodDataList == null) {
-          emit(FoodError("No Data Found"));
-        }
-      } catch (e) {
-        print(e);
-        emit(FoodError("No Data Found"));
-      }
-    });
+  void _getFoodList(GetFoodList event, Emitter<FoodState> emit) async {
+    try {
+      final foodDataList = await repo.getFoodList();
+      emit(FoodLoaded(
+          foodList: foodDataList!, cartList: {}, cartItemRatings: {}));
+    } catch (e) {
+      // print(e);
+      emit(FoodError("Error occurred while fetching data!"));
+    }
+  }
 
-    on<UpdateCart>((event, emit) {
-      Map<int, int> cart = Map<int, int>.from((state as FoodLoaded).cartList);
-      if (event.isAdd) {
-        if (cart[event.item.id] == null) {
-          cart.addAll({event.item.id!: 0});
-        }
-        cart[event.item.id!] = cart[event.item.id!]! + 1;
-        emit(FoodLoaded(
-            foodList: (state as FoodLoaded).foodList, cartList: cart));
-      } else {
-        if (cart[event.item.id]! - 1 == 0) {
-          cart.remove(event.item.id);
-        } else {
-          cart[event.item.id!] = cart[event.item.id!]! - 1;
-        }
-        cart.remove(event.item);
-        emit(
-            FoodLoaded(foodList: (state as FoodLoaded).foodList, cartList: cart));
-      }
-      // print(cart);
-    });
+  void _updateCart(UpdateCart event, Emitter<FoodState> emit) {
+    Map<int, int> cart = Map<int, int>.from((state as FoodLoaded).cartList);
+    if (cart[event.item.id] == null) {
+      cart.addAll({event.item.id!: 0});
+    }
+    cart[event.item.id!] = cart[event.item.id!]! + event.quantity;
+    if (cart[event.item.id]! == 0) {
+      cart.remove(event.item.id);
+    }
+    emit(
+      FoodLoaded(
+        foodList: (state as FoodLoaded).foodList,
+        cartList: cart,
+        cartItemRatings: (state as FoodLoaded).cartItemRatings,
+      ),
+    );
+  }
+
+  void _updateRating(UserRatedItem event, Emitter<FoodState> emit) {
+    Map<int, double> rating = Map<int, double>.from(
+      (state as FoodLoaded).cartItemRatings,
+    );
+    if (rating[event.item.id] == null) {
+      rating.addAll({event.item.id!: 0});
+    }
+    rating[event.item.id!] = event.rating;
+    // print(rating);
+    emit(
+      FoodLoaded(
+        foodList: (state as FoodLoaded).foodList,
+        cartList: (state as FoodLoaded).cartList,
+        cartItemRatings: rating,
+      ),
+    );
   }
 }

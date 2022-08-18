@@ -7,11 +7,18 @@ abstract class FoodEvents {
 
 class UpdateCart extends FoodEvents {
   final FoodModel item;
-  final bool isAdd;
+  final int quantity;
 
-  const UpdateCart({required this.item, required this.isAdd});
+  const UpdateCart({required this.item, required this.quantity});
 }
 
 class GetFoodList extends FoodEvents {}
 
 class GetCart extends FoodEvents {}
+
+class UserRatedItem extends FoodEvents {
+  final FoodModel item;
+  final double rating;
+
+  UserRatedItem({required this.item,required this.rating});
+}

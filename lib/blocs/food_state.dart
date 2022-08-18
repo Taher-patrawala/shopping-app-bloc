@@ -1,29 +1,26 @@
 import 'package:equatable/equatable.dart';
 import 'package:food_delivery/model/food_model.dart';
 
-abstract class FoodState extends Equatable {
+abstract class FoodState extends Equatable {}
 
-}
-
-class FoodInitial extends FoodState {
+class FoodLoading extends FoodState {
   @override
   List<Object?> get props => [];
 }
 
-class FoodLoading extends FoodState {
-
-  @override
-  List<Object?> get props =>[];
-}
-
 class FoodLoaded extends FoodState {
   final List<FoodModel> foodList;
-  final Map<int,int> cartList;
+  final Map<int, int> cartList;
+  final Map<int, double> cartItemRatings;
 
-  FoodLoaded({required this.foodList, required this.cartList});
+  FoodLoaded({
+    required this.cartItemRatings,
+    required this.foodList,
+    required this.cartList,
+  });
 
   @override
-  List<Object?> get props => [foodList,cartList];
+  List<Object?> get props => [foodList, cartList,cartItemRatings];
 }
 
 class FoodError extends FoodState {
@@ -32,5 +29,5 @@ class FoodError extends FoodState {
   FoodError(this.message);
 
   @override
-  List<Object?> get props =>[message];
+  List<Object?> get props => [message];
 }
