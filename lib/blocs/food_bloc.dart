@@ -68,7 +68,7 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
         rating.addAll({event.item.id!: 0});
       }
       rating[event.item.id!] = event.rating;
-      print(rating);
+      // print(rating);
       emit(
         FoodLoaded(
           foodList: (state as FoodLoaded).foodList,
