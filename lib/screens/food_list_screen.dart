@@ -65,13 +65,15 @@ class FoodListScreen extends StatelessWidget {
   }
 
   Widget _buildCard(List<FoodModel> items) {
-    return ListView.builder(
+    return items.isNotEmpty?ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) {
         return FoodItem(
           item: items[index],
         );
       },
+    ):const Center(
+      child: Text("No Data to show"),
     );
   }
 

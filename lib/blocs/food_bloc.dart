@@ -6,23 +6,15 @@ import 'package:food_delivery/repository/food_repo.dart';
 class FoodBloc extends Bloc<FoodEvents, FoodState> {
   final FoodRepo repo = FoodRepo();
 
-  // Map<int, int> cart = {};
-  // List<FoodModel> foodData = [];
-
   FoodBloc() : super(FoodLoading()) {
     on<GetFoodList>((event, emit) async {
       try {
         final foodDataList = await repo.getFoodList();
-        if (foodDataList != null) {
-          emit(FoodLoaded(
-              foodList: foodDataList, cartList: {}, cartItemRatings: {}));
-        }
-        if (foodDataList == null) {
-          emit(FoodError("No Data Found"));
-        }
+        emit(FoodLoaded(
+            foodList: foodDataList!, cartList: {}, cartItemRatings: {}));
       } catch (e) {
-        print(e);
-        emit(FoodError("No Data Found"));
+        // print(e);
+        emit(FoodError("Error occurred while fetching data"));
       }
     });
 
