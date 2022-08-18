@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/blocs/food_bloc.dart';
+import 'package:food_delivery/blocs/food_event.dart';
 import 'package:food_delivery/blocs/food_state.dart';
 import 'package:food_delivery/model/food_model.dart';
 import 'package:food_delivery/screens/cart_screen.dart';
@@ -46,9 +47,8 @@ class FoodListScreen extends StatelessWidget {
       },
       child: BlocBuilder<FoodBloc, FoodState>(
         builder: (context, state) {
-          if (state is FoodInitial) {
-            return _buildLoading();
-          } else if (state is FoodLoading) {
+          if (state is FoodLoading) {
+            context.read<FoodBloc>().add(GetFoodList());
             return _buildLoading();
           } else if (state is FoodLoaded) {
             return _buildCard(state.foodList);

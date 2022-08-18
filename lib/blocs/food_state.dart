@@ -3,11 +3,6 @@ import 'package:food_delivery/model/food_model.dart';
 
 abstract class FoodState extends Equatable {}
 
-class FoodInitial extends FoodState {
-  @override
-  List<Object?> get props => [];
-}
-
 class FoodLoading extends FoodState {
   @override
   List<Object?> get props => [];

@@ -9,13 +9,11 @@ class FoodBloc extends Bloc<FoodEvents, FoodState> {
   // Map<int, int> cart = {};
   // List<FoodModel> foodData = [];
 
-  FoodBloc() : super(FoodInitial()) {
+  FoodBloc() : super(FoodLoading()) {
     on<GetFoodList>((event, emit) async {
       try {
-        emit(FoodLoading());
         final foodDataList = await repo.getFoodList();
         if (foodDataList != null) {
-          // foodData = foodDataList;
           emit(FoodLoaded(
               foodList: foodDataList, cartList: {}, cartItemRatings: {}));
         }

@@ -15,15 +15,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) {
-        return FoodBloc()..add(GetFoodList());
+        return FoodBloc();
       },
       child: MaterialApp(
         title: 'Flutter Demo',
-
         theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: "Inter",
-
         ),
         home: const FoodListScreen(),
       ),
