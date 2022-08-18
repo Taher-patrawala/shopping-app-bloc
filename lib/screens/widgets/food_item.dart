@@ -164,7 +164,7 @@ class FoodItem extends StatelessWidget {
                           if (!contained) {
                             context
                                 .read<FoodBloc>()
-                                .add(UpdateCart(item: item, isAdd: true));
+                                .add(UpdateCart(item: item, quantity: 1));
                           }
                         },
                         child: Container(
@@ -188,12 +188,12 @@ class FoodItem extends StatelessWidget {
                               : CounterButton(
                                   addItem: () {
                                     context.read<FoodBloc>().add(
-                                        UpdateCart(item: item, isAdd: true));
+                                        UpdateCart(item: item, quantity: 1));
                                   },
                                   count: state.cartList[item.id]!,
                                   removeItem: () {
                                     context.read<FoodBloc>().add(
-                                        UpdateCart(item: item, isAdd: false));
+                                        UpdateCart(item: item, quantity: -1));
                                   },
                                 ),
                         ),

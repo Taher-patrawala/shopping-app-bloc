@@ -7,9 +7,9 @@ abstract class FoodEvents {
 
 class UpdateCart extends FoodEvents {
   final FoodModel item;
-  final bool isAdd;
+  final int quantity;
 
-  const UpdateCart({required this.item, required this.isAdd});
+  const UpdateCart({required this.item, required this.quantity});
 }
 
 class GetFoodList extends FoodEvents {}
